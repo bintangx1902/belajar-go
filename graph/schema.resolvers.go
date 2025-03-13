@@ -7,6 +7,7 @@ package graph
 import (
 	"context"
 	"fmt"
+	"graphql/Models"
 	"graphql/graph/model"
 )
 
@@ -16,17 +17,20 @@ func (r *mutationResolver) CreateTodo(ctx context.Context, input model.NewTodo) 
 }
 
 // CreateUser is the resolver for the createUser field.
-func (r *mutationResolver) CreateUser(ctx context.Context, name string, email string) (*model.User, error) {
-	user := &model.User{
-		Name:  name,
-		Email: email,
+func (r *mutationResolver) CreateUser(ctx context.Context, name string, email string, password string) (*model.User, error) {
+	user := &Models.User{
+		Name:     name,
+		Email:    email,
+		Password: password,
 	}
 
 	if err := r.DB.Create(user).Error; err != nil {
 		return nil, fmt.Errorf("failed to create user: %w", err)
 	}
 
-	return user, nil
+	returned := &model.User{Name: user.Name, Email: user.Email, Password: password}
+
+	return returned, nil
 }
 
 // Todos is the resolver for the todos field.

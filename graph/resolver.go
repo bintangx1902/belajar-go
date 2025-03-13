@@ -20,11 +20,11 @@ func (r *Resolver) User(ctx context.Context) ([]*model.User, error) {
 	}
 	return User, nil
 }
-func (r *Resolver) CreateUser(ctx context.Context, name string, email string) (*Models.User, error) {
+func (r *Resolver) CreateUser(ctx context.Context, name, email, password string) (*Models.User, error) {
 	user := &Models.User{
-		ID:    0,
-		Name:  name,
-		Email: email,
+		Name:     name,
+		Email:    email,
+		Password: password,
 	}
 
 	if err := r.DB.Create(user).Error; err != nil {
